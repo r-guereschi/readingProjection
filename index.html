@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#160f0b">
-  <meta name="description" content="Um refúgio de papel, silêncio e jornadas por concluir. Acompanhe suas leituras no Santuário do Eremita Literário.">
+  <meta name="description" content="Um diário de leitura para guardar os livros e acompanhar cada página percorrida.">
   <title>O Santuário do Eremita Literário</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,558 +12,287 @@
   <style>
     :root {
       color-scheme: dark;
-      --mahogany: #160f0b;
-      --wood: #221711;
-      --parchment: #f5ebd9;
-      --ink: #2c221e;
+      --wood: #160f0b;
+      --wood-light: #281a12;
+      --leather: #382417;
       --gold: #c5a059;
-      --gold-light: #e0c47d;
-      --muted: #d9c7a6;
+      --gold-pale: #e0c47d;
+      --paper: #f5ebd9;
+      --paper-shadow: #e4d4b8;
+      --ink: #2c221e;
+      --muted-ink: #76634d;
+      --cream: #eadcc4;
       --line: rgba(197, 160, 89, .48);
-      font-family: "Lora", Georgia, serif;
     }
-
     * { box-sizing: border-box; }
     body {
+      min-width: 320px;
       min-height: 100vh;
       margin: 0;
-      color: var(--parchment);
+      color: var(--cream);
+      font: 15px/1.65 Lora, Georgia, serif;
       background:
-        radial-gradient(ellipse at 50% 0, rgba(116, 72, 39, .28), transparent 48%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0, rgba(255,255,255,.012) 2px, transparent 2px, transparent 7px),
+        radial-gradient(ellipse at 50% 0, rgba(119, 76, 43, .22), transparent 55%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 2px, transparent 2px 8px),
         linear-gradient(135deg, #160f0b, #241710 48%, #130d09);
     }
     button, input { font: inherit; }
     button { cursor: pointer; }
-    .layout { width: min(1440px, 100%); margin: 0 auto; padding: 26px clamp(16px, 4vw, 56px) 48px; }
-    .masthead { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 20px; }
-    .brand-mark { color: var(--gold); font: 600 .78rem "Cinzel", Georgia, serif; letter-spacing: .16em; text-transform: uppercase; }
-    .hero {
-      position: relative; text-align: center; padding: 1.5rem 1rem 1.35rem; margin: 0 0 25px;
-      border-top: 1px solid rgba(197,160,89,.72); border-bottom: 1px solid rgba(197,160,89,.72);
-      background: linear-gradient(90deg, transparent, rgba(104,72,37,.2), transparent);
+    .page-shell { width: min(1240px, calc(100% - 38px)); margin: 0 auto; padding: 38px 0 52px; }
+    .masthead { text-align: center; padding: 10px 0 26px; }
+    .eyebrow { margin: 0 0 8px; color: var(--gold-pale); font: 600 .72rem Cinzel, Georgia, serif; letter-spacing: .22em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 5px; color: #e0c47d; font: 600 clamp(1.7rem, 5vw, 3.2rem)/1.17 Cinzel, Georgia, serif; text-shadow: 0 3px 12px #000; }
+    .subtitle { margin: 8px auto 0; color: #d7c3a2; font: italic 1.28rem "Cormorant Garamond", Georgia, serif; }
+    .rule { display: flex; align-items: center; gap: 14px; max-width: 490px; margin: 17px auto 0; color: var(--gold); }
+    .rule::before, .rule::after { content: ""; height: 1px; flex: 1; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .layout { display: grid; grid-template-columns: minmax(270px, .82fr) minmax(0, 1.65fr); gap: 24px; align-items: start; }
+    .tab-navigation { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 22px; padding: 7px; border: 1px solid rgba(197,160,89,.54); background: linear-gradient(145deg,rgba(57,38,25,.96),rgba(25,17,12,.98)); box-shadow: 0 12px 30px rgba(0,0,0,.32),inset 0 0 0 3px rgba(197,160,89,.05); scrollbar-color: var(--gold) var(--wood); }
+    .tab-button { flex: 1 0 auto; min-height: 45px; padding: 9px 16px; color: #d7c3a2; border: 1px solid transparent; background: transparent; font: 600 .75rem Cinzel, Georgia, serif; letter-spacing: .06em; transition: background .18s ease, color .18s ease, border-color .18s ease; }
+    .tab-button:hover { color: #fff0cf; border-color: rgba(197,160,89,.35); background: rgba(197,160,89,.08); }
+    .tab-button[aria-selected="true"] { color: #fff3da; border: 1px solid #d5b66e; background: linear-gradient(145deg,#9b753c,#634725 55%,#896735); box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 4px 12px rgba(0,0,0,.34); }
+    .tab-panel[hidden] { display: none; }
+    .tab-panel { animation: parchment-reveal .24s ease both; }
+    @keyframes parchment-reveal { from { opacity: .45; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 8px 18px; margin: 0 0 17px; }
+    .page-heading .section-title { margin: 0; font-size: 1.35rem; }
+    .page-kicker { margin: 0; color: #bda987; font: italic 1.05rem "Cormorant Garamond", Georgia, serif; }
+    .welcome-card { position: relative; overflow: hidden; margin-bottom: 19px; padding: 23px 25px; border: 1px solid rgba(197,160,89,.7); background: radial-gradient(ellipse at 85% 20%,rgba(197,160,89,.18),transparent 42%),linear-gradient(130deg,rgba(67,43,27,.98),rgba(28,19,14,.98)); box-shadow: 0 13px 30px rgba(0,0,0,.34),inset 0 0 0 4px rgba(197,160,89,.07); }
+    .welcome-card::after { content: "❧"; position: absolute; right: 22px; bottom: -27px; color: rgba(197,160,89,.13); font-size: 7rem; }
+    .welcome-card h2 { position: relative; z-index: 1; margin: 0 0 5px; color: var(--gold-pale); font: 600 clamp(1.3rem,3vw,1.9rem) Cinzel, Georgia, serif; }
+    .welcome-card p { position: relative; z-index: 1; max-width: 700px; margin: 0; color: #d7c3a2; font: italic 1.16rem/1.5 "Cormorant Garamond", Georgia, serif; }
+    .overview-columns { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(250px,.8fr); gap: 20px; align-items: start; }
+    .inner-panel { min-width: 0; padding: 20px; border: 1px solid rgba(197,160,89,.57); background: linear-gradient(145deg,rgba(57,38,25,.97),rgba(25,17,12,.97)); box-shadow: 0 12px 27px rgba(0,0,0,.29),inset 0 0 0 4px rgba(197,160,89,.045); }
+    .inner-panel .section-title { margin-bottom: 13px; font-size: 1rem; }
+    .overview-book { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(197,160,89,.24); }
+    .overview-book:first-child { border-top: 0; }
+    .overview-book strong { display: block; color: #f0dfc0; font: 600 1.15rem "Cormorant Garamond", Georgia, serif; }
+    .overview-book span { color: #bda987; font-size: .73rem; }
+    .activity-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .activity-list li { padding: 10px 11px; color: #ddcbaa; border-left: 2px solid var(--gold); background: rgba(0,0,0,.18); font-size: .8rem; }
+    .activity-list time { display: block; color: #bda987; font-size: .7rem; }
+    .select-input { width: 100%; min-height: 43px; padding: 9px 11px; color: var(--ink); border: 1px solid #aa8950; border-radius: 2px; background: linear-gradient(135deg,#fbf3e5,#e9dbc0); font: inherit; }
+    .checkin-layout { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(250px,.75fr); gap: 20px; align-items: start; }
+    .checkin-current { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 15px 0 4px; padding: 12px 14px; color: #604a32; border: 1px solid #c5a66b; background: linear-gradient(135deg,#f8efdf,#e9dbc0); }
+    .checkin-current strong { color: #37271d; font: 700 1.25rem "Cormorant Garamond", Georgia, serif; }
+    .backup-card { max-width: 760px; }
+    .backup-card p { color: #d7c3a2; }
+    .privacy-note { margin-top: 18px; padding: 13px 15px; color: #ddcbaa; border-left: 2px solid var(--gold); background: rgba(0,0,0,.18); font-size: .82rem; }
+    .select-wrap { max-width: 430px; }
+    .icon-button { min-width: 36px; }
+    @media (max-width: 650px) {
+      .tab-navigation { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); overflow: visible; }
+      .tab-button { min-width: 0; padding: 8px; white-space: normal; font-size: .67rem; }
     }
-    .hero::before, .hero::after { content: "❧"; color: var(--gold); padding: 0 .7rem; }
-    h1, h2, h3 { font-family: "Cinzel", "Cormorant Garamond", Georgia, serif; }
-    .hero h1 { margin: .15rem 0; color: var(--gold); font-size: clamp(1.55rem, 3.4vw, 2.7rem); letter-spacing: .045em; text-shadow: 0 3px 14px rgba(0,0,0,.7); }
-    .hero p { margin: .3rem 0 0; color: var(--muted); font: italic 1.3rem "Cormorant Garamond", Georgia, serif; }
-    .workbench { display: grid; grid-template-columns: minmax(255px, 310px) minmax(0, 1fr); gap: 25px; align-items: start; }
-    .side-panel, .main-panel {
-      border: 1px solid rgba(197,160,89,.58);
-      background: linear-gradient(145deg, rgba(44,30,21,.94), rgba(25,17,12,.98));
-      box-shadow: 0 13px 30px rgba(0,0,0,.36), inset 0 0 0 4px rgba(197,160,89,.045);
+    .panel {
+      position: relative; padding: 24px;
+      color: var(--cream);
+      border: 1px solid rgba(197,160,89,.63);
+      background: linear-gradient(145deg, rgba(57,38,25,.98), rgba(25,17,12,.98));
+      box-shadow: 0 18px 42px rgba(0,0,0,.4), inset 0 0 0 5px rgba(197,160,89,.045), inset 0 0 0 6px rgba(197,160,89,.13);
     }
-    .side-panel { padding: 20px 19px; position: sticky; top: 16px; }
-    .main-panel { min-height: 480px; padding: clamp(17px, 3vw, 30px); }
-    .section-heading { color: var(--gold); font: 600 1.28rem "Cinzel", Georgia, serif; margin: 0 0 15px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-    .side-copy { color: var(--muted); font: italic 1.08rem "Cormorant Garamond", Georgia, serif; margin: -4px 0 15px; }
-    .field { display: grid; gap: 6px; margin: 13px 0; }
-    .field label { color: #e8d8bc; font-size: .88rem; }
-    .field input, .select-control {
+    .panel::before { content: "✦"; position: absolute; top: 8px; left: 11px; color: var(--gold); font-size: .75rem; }
+    .panel::after { content: "✦"; position: absolute; right: 11px; bottom: 8px; color: var(--gold); font-size: .75rem; }
+    .section-title { margin: 0 0 17px; color: var(--gold-pale); font: 600 1.15rem Cinzel, Georgia, serif; letter-spacing: .045em; }
+    .section-title span { margin-right: 8px; color: var(--gold); }
+    label { display: block; margin: 12px 0 5px; color: #eadcc4; font-size: .86rem; }
+    input {
       width: 100%; min-height: 42px; padding: 9px 11px; color: var(--ink);
-      background: linear-gradient(135deg, #f8efdf, #e8d8ba);
-      border: 1px solid #9c793f; border-radius: 2px;
-      box-shadow: inset 0 2px 5px rgba(70,48,25,.16), 0 2px 5px rgba(0,0,0,.18);
+      border: 1px solid #aa8950; border-radius: 2px;
+      background: linear-gradient(135deg, #fbf3e5, #e9dbc0);
+      box-shadow: inset 0 2px 4px rgba(78,48,20,.14);
     }
-    .field input:focus, .select-control:focus { outline: 2px solid var(--gold-light); outline-offset: 2px; }
-    .ornate-button, .tab-button {
-      color: #f8edd8; font: 600 .85rem "Cinzel", Georgia, serif; letter-spacing: .035em;
-      border: 1px solid #d5b66e; border-radius: 3px;
+    input:focus { outline: 2px solid var(--gold-pale); outline-offset: 2px; }
+    input::placeholder { color: #88765e; }
+    .gold-button, .quiet-button, .danger-button {
+      min-height: 42px; padding: 9px 15px; border: 1px solid #d5b66e; border-radius: 3px;
+      color: #fff3da; font: 600 .8rem Cinzel, Georgia, serif; letter-spacing: .045em;
       background: linear-gradient(145deg, #b38c48, #74542b 52%, #a67c3c);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.34), inset 0 -2px 0 rgba(39,23,11,.42), 0 5px 13px rgba(0,0,0,.4);
-      text-shadow: 0 1px 2px #382412;
-      transition: filter .18s ease, transform .18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.34), 0 5px 13px rgba(0,0,0,.37);
+      transition: filter .16s ease, transform .16s ease;
     }
-    .ornate-button { padding: 10px 14px; }
-    .ornate-button:hover, .tab-button:hover { filter: brightness(1.16); transform: translateY(-1px); }
-    .ornate-button:focus-visible, .tab-button:focus-visible, .icon-button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
-    .full-width { width: 100%; margin-top: 5px; }
-    .subtle-button { padding: 8px 11px; font-size: .75rem; }
-    .tab-bar { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 24px; padding-bottom: 15px; border-bottom: 1px solid var(--line); }
-    .tab-button { padding: 9px 14px; }
-    .tab-button[aria-selected="true"] { color: #291d12; background: linear-gradient(145deg, #e3c779, #a27a39); border-color: #f0d48a; text-shadow: none; }
-    .tab-content[hidden] { display: none; }
-    .toolbar { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; margin: 0 0 19px; }
-    .toolbar .field { flex: 1 1 250px; margin: 0; }
-    .book-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; align-items: start; }
+    .gold-button:hover, .quiet-button:hover, .danger-button:hover { filter: brightness(1.14); transform: translateY(-1px); }
+    .gold-button:focus-visible, .quiet-button:focus-visible, .danger-button:focus-visible { outline: 2px solid var(--gold-pale); outline-offset: 3px; }
+    .wide { width: 100%; margin-top: 18px; }
+    .small-button { min-height: 34px; padding: 6px 10px; font-size: .68rem; }
+    .quiet-button { min-height: 36px; border-color: #9f824b; background: linear-gradient(145deg,#60482d,#382719); }
+    .danger-button { min-height: 34px; padding: 5px 9px; border-color: #a76d55; background: linear-gradient(145deg,#78452f,#4a271c); font-size: .67rem; }
+    .side-note { margin: 18px 0 0; padding-top: 13px; color: #bda987; border-top: 1px solid var(--line); font: italic 1.08rem "Cormorant Garamond", Georgia, serif; }
+    .main-column { display: grid; gap: 21px; }
+    .analytics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 17px; }
+    .metric { padding: 12px 10px; text-align: center; color: var(--ink); border: 1px solid #b99a63; background: linear-gradient(140deg, #fbf2e3, #e6d5b5); box-shadow: inset 0 0 0 3px rgba(135,99,47,.09), 0 4px 12px rgba(0,0,0,.21); }
+    .metric-value { display: block; color: #684927; font: 700 1.4rem "Cormorant Garamond", Georgia, serif; }
+    .metric-label { display: block; color: #76634d; font-size: .68rem; line-height: 1.3; }
+    .prophesy { margin: 0; padding: 13px 15px; color: #ecdab8; border-left: 2px solid var(--gold); background: rgba(0,0,0,.18); font: italic 1.15rem/1.45 "Cormorant Garamond", Georgia, serif; }
+    .book-list { display: grid; gap: 15px; }
     .book-card {
-      position: relative; overflow: hidden; color: var(--ink); padding: 19px 19px 17px;
+      position: relative; overflow: hidden; padding: 19px 19px 16px; color: var(--ink);
+      border: 1px solid #c5a66b;
       background:
-        repeating-linear-gradient(0deg, rgba(88,62,34,.025) 0, rgba(88,62,34,.025) 1px, transparent 1px, transparent 4px),
-        linear-gradient(125deg, #f8f0e2, #eadbc1);
-      border: 1px solid #b18b50; outline: 1px solid rgba(197,160,89,.46); outline-offset: -6px;
-      box-shadow: 0 12px 24px rgba(0,0,0,.4), inset 0 1px rgba(255,255,255,.75);
+        radial-gradient(ellipse at 15% 5%, rgba(255,255,255,.73), transparent 45%),
+        repeating-linear-gradient(0deg, rgba(95,65,35,.025) 0 1px, transparent 1px 4px),
+        linear-gradient(135deg, #f8efdf, #e9dbc0 52%, #f5ebd9);
+      box-shadow: 0 9px 22px rgba(0,0,0,.32), inset 0 0 0 4px rgba(145,106,51,.1), inset 0 0 0 5px rgba(197,160,89,.45);
     }
-    .book-card::before { content: "✦"; position: absolute; right: 16px; top: 12px; color: #b28a4b; opacity: .7; }
-    .book-card h3 { color: #3a291d; font: 700 1.48rem "Cormorant Garamond", Georgia, serif; margin: 0 24px 2px 0; }
-    .book-author { color: #574536; margin: 0 0 13px; }
-    .book-meta { color: #725b40; font-size: .82rem; margin-bottom: 11px; }
-    .progress-track { height: 11px; overflow: hidden; background: #d1bea0; border: 1px solid #9f7d49; box-shadow: inset 0 2px 4px rgba(0,0,0,.18); }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #866331, #d0ad60, #a27a39); box-shadow: inset 0 1px rgba(255,255,255,.45); }
-    .progress-copy { color: #513d29; font-size: .83rem; margin-top: 6px; }
-    .empty-note { grid-column: 1 / -1; text-align: center; color: var(--muted); font: italic 1.27rem "Cormorant Garamond", Georgia, serif; padding: 42px 18px; border: 1px dashed rgba(197,160,89,.45); }
-    .help-copy, .caption { color: #cbb897; font-size: .86rem; }
-    .caption { margin-top: 8px; }
-    .notice { padding: 11px 13px; margin: 13px 0; border: 1px solid; font-size: .9rem; }
-    .notice.error { color: #f5c2a8; background: rgba(112,38,25,.23); border-color: #a5533c; }
-    .notice.success { color: #e1d3a7; background: rgba(81,88,41,.24); border-color: #8b8b51; }
-    .notice[hidden] { display: none; }
-    .reading-form { max-width: 620px; }
-    .poem {
-      padding: 15px 18px; margin: 18px 0; color: #ead8b8;
-      background: linear-gradient(120deg, rgba(75,49,29,.72), rgba(36,24,16,.72));
-      border-left: 3px solid var(--gold); box-shadow: 0 7px 18px rgba(0,0,0,.26);
-      font: italic 1.24rem "Cormorant Garamond", Georgia, serif;
-    }
-    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; }
-    .metric {
-      min-height: 95px; padding: 15px 13px;
-      background: linear-gradient(145deg, rgba(57,38,25,.96), rgba(31,20,14,.98));
-      border: 1px solid #8e6e3c; outline: 1px solid rgba(197,160,89,.25); outline-offset: -5px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.32), inset 0 1px rgba(255,255,255,.08);
-    }
-    .metric-label { display: block; color: var(--gold); font: 500 .72rem "Cinzel", Georgia, serif; }
-    .metric-value { display: block; color: var(--parchment); margin-top: 7px; font: 600 1.48rem "Cormorant Garamond", Georgia, serif; }
-    .history-list { list-style: none; padding: 0; margin: 0; }
-    .history-list li { padding: 10px 3px; color: #eadcc4; border-bottom: 1px solid rgba(197,160,89,.22); }
-    .history-list strong { color: var(--gold-light); font-weight: 500; }
-    .data-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); }
-    .icon-button { padding: 7px 10px; color: #dfc997; background: transparent; border: 1px solid rgba(197,160,89,.42); }
-    .footer { margin-top: 24px; text-align: center; color: #9c8565; font: italic .95rem "Cormorant Garamond", Georgia, serif; }
-    @media (max-width: 850px) {
-      .workbench { grid-template-columns: 1fr; }
-      .side-panel { position: static; }
-      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 560px) {
-      .layout { padding: 16px 13px 30px; }
-      .masthead { align-items: flex-start; }
-      .brand-mark { font-size: .65rem; }
-      .hero { padding: 1.15rem .4rem; }
-      .hero::before, .hero::after { padding: 0 .2rem; }
-      .hero p { font-size: 1.1rem; }
-      .book-grid { grid-template-columns: 1fr; }
-      .tab-bar { gap: 7px; }
-      .tab-button { flex: 1 1 auto; padding: 8px 9px; font-size: .72rem; }
-      .metrics { gap: 8px; }
-      .metric { padding: 13px 10px; }
-      .metric-value { font-size: 1.25rem; }
-    }
+    .book-card::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 8px; background: linear-gradient(90deg,#70502d,#c4a46a,#846139); box-shadow: 2px 0 4px rgba(57,35,15,.24); }
+    .book-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding-left: 9px; }
+    .book-title { margin: 0; color: #37271d; font: 700 1.35rem/1.15 "Cormorant Garamond", Georgia, serif; }
+    .book-author { margin: 3px 0 0; color: #786347; font-size: .86rem; }
+    .book-pages { flex: 0 0 auto; color: #806334; font: 600 .75rem Cinzel, Georgia, serif; text-align: right; }
+    .book-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 12px 0 8px 9px; color: #715c43; font-size: .72rem; }
+    .progress-track { height: 11px; margin: 0 0 5px 9px; border: 1px solid #ab8b57; background: #d1bea0; box-shadow: inset 0 1px 3px rgba(47,32,16,.22); }
+    .progress-fill { height: 100%; background: linear-gradient(90deg,#806030,#c5a059,#e0c47d); box-shadow: inset 0 1px rgba(255,255,255,.45), 0 0 6px rgba(159,119,50,.35); transition: width .3s ease; }
+    .progress-label { display: flex; justify-content: space-between; margin-left: 9px; color: #705b42; font-size: .72rem; }
+    .checkin { display: grid; grid-template-columns: minmax(100px,1fr) auto; gap: 8px; align-items: end; margin: 12px 0 0 9px; padding-top: 11px; border-top: 1px solid rgba(126,91,44,.3); }
+    .checkin label { margin: 0 0 4px; color: #5f4b35; font-size: .74rem; }
+    .checkin input { min-height: 36px; padding: 6px 8px; }
+    .book-actions { display: flex; justify-content: flex-end; margin: 10px 0 0 9px; }
+    .empty { padding: 27px 15px; color: #e0cfad; text-align: center; border: 1px dashed rgba(197,160,89,.52); font: italic 1.25rem "Cormorant Garamond", Georgia, serif; }
+    .empty-symbol { display: block; margin-bottom: 4px; color: var(--gold); font-size: 1.7rem; }
+    .tools { display: flex; flex-wrap: wrap; gap: 9px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .tools input[type="file"] { display: none; }
+    .notice { min-height: 1.4em; margin: 10px 0 0; color: #f1c98a; font-size: .8rem; }
+    .notice.error { color: #f2ad91; }
+    .footer { margin-top: 25px; color: #a99472; text-align: center; font: italic 1.1rem "Cormorant Garamond", Georgia, serif; }
+    @media (max-width: 850px) { .layout { grid-template-columns: 1fr; } .analytics { grid-template-columns: repeat(2,1fr); } .overview-columns,.checkin-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 500px) { .page-shell { width: min(100% - 24px, 600px); padding-top: 22px; } .panel { padding: 21px 16px; } .book-card { padding-right: 13px; } .book-top { flex-direction: column; gap: 3px; } .book-pages { text-align: left; } .tab-navigation { margin-right: -6px; margin-left: -6px; } .tab-button { padding: 8px 12px; font-size: .68rem; } .welcome-card { padding: 18px; } }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <div class="masthead">
-      <div class="brand-mark">Bibliotheca Solitaria</div>
-      <button class="ornate-button subtle-button" id="export-button" type="button">Exportar meus registros</button>
-    </div>
-
-    <header class="hero">
-      <h1>O Santuário do Eremita Literário</h1>
-      <p>Um refúgio de papel, silêncio e jornadas por concluir</p>
+  <main class="page-shell">
+    <header class="masthead">
+      <p class="eyebrow">Diário de uma vida entre páginas</p>
+      <h1>O Santuário do<br> Eremita Literário</h1>
+      <p class="subtitle">“Uma página por vez, o mundo se abre em silêncio.”</p>
+      <div class="rule" aria-hidden="true">❧</div>
     </header>
 
-    <div class="workbench">
-      <aside class="side-panel">
-        <h2 class="section-heading">Nova ficha de catálogo</h2>
-        <p class="side-copy">Registre o próximo volume que fará companhia às suas noites.</p>
-        <form id="book-form">
-          <div class="field">
-            <label for="book-title">Título do livro</label>
-            <input id="book-title" name="title" maxlength="180" required autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="book-author">Autor</label>
-            <input id="book-author" name="author" maxlength="140" required autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="book-pages">Total de páginas</label>
-            <input id="book-pages" name="pages" type="number" min="1" max="100000" value="250" required>
-          </div>
-          <div class="field">
-            <label for="book-start">Data de início</label>
-            <input id="book-start" name="startDate" type="date" required>
-          </div>
-          <button class="ornate-button full-width" type="submit">Guardar na biblioteca</button>
-        </form>
-        <div class="notice" id="form-notice" role="status" aria-live="polite" hidden></div>
-        <p class="help-copy">Seus registros ficam salvos neste navegador. Exporte uma cópia para transferi-los ou guardá-los.</p>
-        <div class="data-tools">
-          <button class="icon-button" id="import-button" type="button">Importar cópia</button>
-          <input id="import-file" type="file" accept="application/json,.json" hidden>
+    <nav class="tab-navigation" role="tablist" aria-label="Seções do Santuário">
+      <button class="tab-button" id="tab-overview" type="button" role="tab" aria-selected="true" aria-controls="panel-overview" data-tab-target="overview">☼ &nbsp; Painel</button>
+      <button class="tab-button" id="tab-shelf" type="button" role="tab" aria-selected="false" aria-controls="panel-shelf" tabindex="-1" data-tab-target="shelf">❧ &nbsp; Estante</button>
+      <button class="tab-button" id="tab-checkin" type="button" role="tab" aria-selected="false" aria-controls="panel-checkin" tabindex="-1" data-tab-target="checkin">✎ &nbsp; Check-in</button>
+      <button class="tab-button" id="tab-new-book" type="button" role="tab" aria-selected="false" aria-controls="panel-new-book" tabindex="-1" data-tab-target="new-book">✒ &nbsp; Novo livro</button>
+      <button class="tab-button" id="tab-archive" type="button" role="tab" aria-selected="false" aria-controls="panel-archive" tabindex="-1" data-tab-target="archive">♧ &nbsp; Arquivo</button>
+    </nav>
+
+    <section class="tab-panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+      <div class="welcome-card">
+        <p class="eyebrow">O silêncio também conta histórias</p>
+        <h2>Seu refúgio entre páginas</h2>
+        <p>Uma biblioteca para acompanhar os caminhos já percorridos e os capítulos que ainda esperam por você.</p>
+      </div>
+      <section class="panel" aria-labelledby="overview-title">
+        <div class="page-heading">
+          <h2 class="section-title" id="overview-title"><span>☼</span>O painel do eremita</h2>
+          <p class="page-kicker" id="today-label"></p>
         </div>
-      </aside>
-
-      <main class="main-panel">
-        <nav class="tab-bar" role="tablist" aria-label="Seções da biblioteca">
-          <button class="tab-button" id="tab-catalog" type="button" role="tab" aria-selected="true" aria-controls="panel-catalog">A Biblioteca</button>
-          <button class="tab-button" id="tab-checkin" type="button" role="tab" aria-selected="false" aria-controls="panel-checkin">Diário de Leitura</button>
-          <button class="tab-button" id="tab-analytics" type="button" role="tab" aria-selected="false" aria-controls="panel-analytics">Painel do Eremita</button>
-        </nav>
-
-        <section class="tab-content" id="panel-catalog" role="tabpanel" aria-labelledby="tab-catalog">
-          <h2 class="section-heading">Volumes em sua biblioteca</h2>
-          <div class="book-grid" id="book-grid"></div>
+        <div class="analytics" id="analytics" aria-live="polite"></div>
+        <p class="prophesy" id="prophesy">A biblioteca aguarda o primeiro capítulo de sua jornada.</p>
+      </section>
+      <div class="overview-columns" style="margin-top:20px">
+        <section class="inner-panel" aria-labelledby="journey-title">
+          <h2 class="section-title" id="journey-title"><span>✧</span>Jornadas em andamento</h2>
+          <div id="overview-books"></div>
+          <button type="button" class="quiet-button small-button" data-open-tab="shelf">Ver toda a estante &nbsp; →</button>
         </section>
-
-        <section class="tab-content" id="panel-checkin" role="tabpanel" aria-labelledby="tab-checkin" hidden>
-          <h2 class="section-heading">Anotar o progresso de hoje</h2>
-          <div class="reading-form">
-            <div class="field">
-              <label for="checkin-book">Escolha o tomo</label>
-              <select class="select-control" id="checkin-book"></select>
-            </div>
-            <div class="field">
-              <label for="current-page">Página atual</label>
-              <input id="current-page" type="number" min="0" step="1" value="0">
-            </div>
-            <p class="caption" id="checkin-date"></p>
-            <button class="ornate-button" id="save-checkin" type="button">Registrar nas margens</button>
-            <div class="notice" id="checkin-notice" role="status" aria-live="polite" hidden></div>
-          </div>
-          <h2 class="section-heading" style="margin-top:27px">Registros recentes</h2>
-          <ul class="history-list" id="checkin-history"></ul>
+        <section class="inner-panel" aria-labelledby="activity-title">
+          <h2 class="section-title" id="activity-title"><span>⌛</span>Últimas leituras</h2>
+          <ul class="activity-list" id="activity-list"></ul>
         </section>
+      </div>
+    </section>
 
-        <section class="tab-content" id="panel-analytics" role="tabpanel" aria-labelledby="tab-analytics" hidden>
-          <h2 class="section-heading">Leitura das suas jornadas</h2>
-          <div class="field">
-            <label for="analytics-book">Tomo em análise</label>
-            <select class="select-control" id="analytics-book"></select>
-          </div>
-          <div class="metrics" id="metrics"></div>
-          <div id="forecast"></div>
-          <p class="caption" id="average-caption"></p>
-          <h2 class="section-heading" style="margin-top:26px">Anotações recentes</h2>
-          <ul class="history-list" id="analytics-history"></ul>
-        </section>
-      </main>
-    </div>
-    <footer class="footer">Que cada página seja uma vela acesa na quietude da noite.</footer>
-  </div>
+    <section class="tab-panel" id="panel-shelf" role="tabpanel" aria-labelledby="tab-shelf" tabindex="0" hidden>
+      <section class="panel">
+        <div class="page-heading">
+          <h2 class="section-title"><span>❧</span>A estante de jornadas</h2>
+          <p class="page-kicker">Cada lombada guarda um mundo.</p>
+        </div>
+        <div class="book-list" id="book-list"></div>
+        <p class="notice" id="list-notice" role="status" aria-live="polite"></p>
+        <p class="side-note">“Sempre imaginei que o paraíso fosse uma espécie de biblioteca.” <span>— Jorge Luis Borges</span></p>
+      </section>
+    </section>
 
-  <script>
-    (() => {
-      "use strict";
-
-      const STORAGE_KEY = "santuario-eremita-literario-v1";
-      const monthNames = [
-        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-      ];
-      const seasons = {
-        12: "verão", 1: "verão", 2: "verão",
-        3: "outono", 4: "outono", 5: "outono",
-        6: "inverno", 7: "inverno", 8: "inverno",
-        9: "primavera", 10: "primavera", 11: "primavera"
-      };
-      const byId = (id) => document.getElementById(id);
-      const localDateString = (date = new Date()) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-      };
-      const parseLocalDate = (value) => {
-        const [year, month, day] = value.split("-").map(Number);
-        return new Date(year, month - 1, day);
-      };
-      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      })[char]);
-      const formatDate = (value) => {
-        const [year, month, day] = value.split("-");
-        return `${day}/${month}/${year}`;
-      };
-      const formatNumber = (value) => new Intl.NumberFormat("pt-BR").format(value);
-
-      function loadState() {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (!saved) return { books: [] };
-          const parsed = JSON.parse(saved);
-          if (!parsed || !Array.isArray(parsed.books)) throw new Error("Formato de dados inválido.");
-          return {
-            books: parsed.books.filter((book) =>
-              book && typeof book.id === "string" &&
-              typeof book.title === "string" && typeof book.author === "string" &&
-              Number.isInteger(book.totalPages) && book.totalPages > 0 &&
-              typeof book.startDate === "string" && Array.isArray(book.checkins)
-            )
-          };
-        } catch (error) {
-          console.error("Não foi possível carregar os registros locais:", error);
-          return { books: [] };
-        }
-      }
-
-      let state = loadState();
-      const persist = () => {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          return true;
-        } catch (error) {
-          console.error("Não foi possível salvar os registros locais:", error);
-          showNotice("form-notice", "Não foi possível salvar no navegador. Exporte os dados ou libere espaço e tente novamente.", "error");
-          return false;
-        }
-      };
-
-      function showNotice(id, message, kind) {
-        const notice = byId(id);
-        notice.textContent = message;
-        notice.className = `notice ${kind}`;
-        notice.hidden = false;
-      }
-
-      function hideNotice(id) {
-        byId(id).hidden = true;
-      }
-
-      function latestPage(book) {
-        const latest = [...book.checkins].sort((a, b) => b.date.localeCompare(a.date))[0];
-        return latest ? latest.page : 0;
-      }
-
-      function renderCatalog() {
-        const grid = byId("book-grid");
-        if (!state.books.length) {
-          grid.innerHTML = '<div class="empty-note">A biblioteca aguarda seu primeiro tomo. Preencha uma ficha ao lado para começar.</div>';
-          return;
-        }
-        grid.innerHTML = state.books.map((book) => {
-          const page = Math.min(latestPage(book), book.totalPages);
-          const percent = page / book.totalPages * 100;
-          return `
-            <article class="book-card">
-              <h3>${escapeHtml(book.title)}</h3>
-              <p class="book-author">por ${escapeHtml(book.author)}</p>
-              <div class="book-meta">Iniciado em ${formatDate(book.startDate)} &nbsp;·&nbsp; ${formatNumber(book.totalPages)} páginas</div>
-              <div class="progress-track" role="progressbar" aria-label="Progresso de ${escapeHtml(book.title)}" aria-valuenow="${percent.toFixed(1)}" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-fill" style="width:${percent.toFixed(2)}%"></div>
+    <section class="tab-panel" id="panel-checkin" role="tabpanel" aria-labelledby="tab-checkin" tabindex="0" hidden>
+      <section class="panel">
+        <div class="page-heading">
+          <h2 class="section-title"><span>✎</span>Diário de leitura</h2>
+          <p class="page-kicker">O registro de hoje, escrito à margem do tempo.</p>
+        </div>
+        <div id="checkin-empty" class="empty" hidden><span class="empty-symbol">❧</span>Não há tomos na estante.<br>Cadastre um livro antes de iniciar um check-in.</div>
+        <div id="checkin-workspace">
+          <div class="checkin-layout">
+            <div class="inner-panel">
+              <div class="select-wrap">
+                <label for="checkin-book">Escolha o tomo desta jornada</label>
+                <select class="select-input" id="checkin-book"></select>
               </div>
-              <div class="progress-copy">Página ${formatNumber(page)} de ${formatNumber(book.totalPages)} &nbsp;·&nbsp; ${percent.toFixed(1)}% percorrido</div>
-            </article>`;
-        }).join("");
-      }
+              <div id="checkin-details"></div>
+              <form id="checkin-form">
+                <label for="current-page">Página alcançada hoje · <span id="checkin-date"></span></label>
+                <input id="current-page" name="page" type="number" min="1" max="1000000" step="1" required>
+                <button class="gold-button wide" type="submit">✦ Registrar este avanço ✦</button>
+                <p class="notice" id="checkin-notice" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+            <aside class="inner-panel">
+              <h3 class="section-title"><span>⌛</span>Margens do diário</h3>
+              <ul class="activity-list" id="checkin-history"></ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </section>
 
-      function populateSelect(select, selectedId) {
-        const previous = selectedId || select.value;
-        select.innerHTML = state.books.map((book) =>
-          `<option value="${escapeHtml(book.id)}">${escapeHtml(book.title)} — ${escapeHtml(book.author)}</option>`
-        ).join("");
-        if (state.books.some((book) => book.id === previous)) select.value = previous;
-        select.disabled = !state.books.length;
-      }
+    <section class="tab-panel" id="panel-new-book" role="tabpanel" aria-labelledby="tab-new-book" tabindex="0" hidden>
+      <div class="overview-columns">
+        <section class="panel">
+          <div class="page-heading">
+            <h2 class="section-title"><span>✒</span>Nova ficha de catálogo</h2>
+            <p class="page-kicker">Dê lugar a uma nova jornada.</p>
+          </div>
+          <form id="book-form">
+            <label for="title">Título do tomo</label>
+            <input id="title" name="title" maxlength="160" placeholder="O nome que repousará na estante" required>
+            <label for="author">Autor ou autora</label>
+            <input id="author" name="author" maxlength="120" placeholder="Quem escreveu estas páginas" required>
+            <label for="total-pages">Número total de páginas</label>
+            <input id="total-pages" name="totalPages" type="number" min="1" max="1000000" step="1" placeholder="Ex.: 384" required>
+            <label for="start-date">Data de início</label>
+            <input id="start-date" name="startDate" type="date" required>
+            <button class="gold-button wide" type="submit">✦ &nbsp; Guardar na biblioteca &nbsp; ✦</button>
+            <p class="notice" id="form-notice" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <aside class="inner-panel">
+          <h2 class="section-title"><span>❧</span>Uma nota à margem</h2>
+          <p class="side-note" style="margin-top:0">“Os livros são espelhos: só se vê neles o que já se possui dentro.”</p>
+          <p style="color:#bda987">— Carlos Ruiz Zafón</p>
+          <p style="color:#d7c3a2;font:italic 1.08rem 'Cormorant Garamond',Georgia,serif">Registre a primeira página no seu tempo. O relógio das previsões começa a contar a partir da data de início escolhida.</p>
+          <button type="button" class="quiet-button small-button" data-open-tab="shelf">Consultar a estante &nbsp; →</button>
+        </aside>
+      </div>
+    </section>
 
-      function renderHistory(book, listId) {
-        const list = byId(listId);
-        if (!book || !book.checkins.length) {
-          list.innerHTML = '<li class="help-copy">Ainda não há anotações nas margens deste tomo.</li>';
-          return;
-        }
-        const records = [...book.checkins].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
-        list.innerHTML = records.map((entry) =>
-          `<li><strong>${formatDate(entry.date)}</strong> — página ${formatNumber(entry.page)}</li>`
-        ).join("");
-      }
-
-      function renderCheckin() {
-        const select = byId("checkin-book");
-        populateSelect(select);
-        const book = state.books.find((item) => item.id === select.value);
-        byId("checkin-date").textContent = `Data do registro: ${formatDate(localDateString())}`;
-        const pageInput = byId("current-page");
-        if (book) {
-          pageInput.max = String(book.totalPages);
-          pageInput.value = String(latestPage(book));
-        } else {
-          pageInput.removeAttribute("max");
-          pageInput.value = "0";
-        }
-        byId("save-checkin").disabled = !book;
-        renderHistory(book, "checkin-history");
-      }
-
-      function formatLongDate(value) {
-        const day = value.getDate();
-        return `${day} de ${monthNames[value.getMonth()]}`;
-      }
-
-      function forecastText(average, finishDate) {
-        let pace;
-        if (average >= 20) pace = "Com passos firmes e páginas vorazes";
-        else if (average >= 8) pace = "No compasso constante de sua leitura";
-        else pace = "No ritmo sereno que sua jornada pede";
-        return `${pace}, este tomo se concluirá sob o sol de ${seasons[finishDate.getMonth() + 1]} em ${formatLongDate(finishDate)}.`;
-      }
-
-      function renderAnalytics() {
-        const select = byId("analytics-book");
-        populateSelect(select);
-        const book = state.books.find((item) => item.id === select.value);
-        const metrics = byId("metrics");
-        const forecast = byId("forecast");
-        const caption = byId("average-caption");
-        if (!book) {
-          metrics.innerHTML = "";
-          forecast.innerHTML = '<div class="empty-note">Adicione um livro para revelar as previsões de sua jornada.</div>';
-          caption.textContent = "";
-          renderHistory(null, "analytics-history");
-          return;
-        }
-        const today = parseLocalDate(localDateString());
-        const started = parseLocalDate(book.startDate);
-        const elapsedDays = Math.max(Math.floor((today - started) / 86400000) + 1, 1);
-        const page = Math.min(latestPage(book), book.totalPages);
-        const remaining = Math.max(book.totalPages - page, 0);
-        const average = page / elapsedDays;
-        const percentage = page / book.totalPages * 100;
-        const metricItems = [
-          ["Progresso", `${percentage.toFixed(1)}%`],
-          ["Páginas lidas", formatNumber(page)],
-          ["Páginas restantes", formatNumber(remaining)],
-          ["Média diária real", page ? `${average.toFixed(1)} pág./dia` : "—"]
-        ];
-        metrics.innerHTML = metricItems.map(([label, value]) =>
-          `<div class="metric"><span class="metric-label">${label}</span><span class="metric-value">${value}</span></div>`
-        ).join("");
-
-        if (remaining === 0) {
-          forecast.innerHTML = '<div class="poem">O último capítulo já repousa em suas mãos. Que esta história permaneça acesa na memória.</div><div class="metric"><span class="metric-label">Término</span><span class="metric-value">Concluído</span></div>';
-        } else if (average > 0) {
-          const finishDate = new Date(today);
-          finishDate.setDate(finishDate.getDate() + Math.ceil(remaining / average));
-          forecast.innerHTML = `<div class="poem">${escapeHtml(forecastText(average, finishDate))}</div><div class="metric"><span class="metric-label">Término estimado</span><span class="metric-value">${formatDate(localDateString(finishDate))}</span></div>`;
-        } else {
-          forecast.innerHTML = '<div class="poem">Toda grande jornada começa com uma página. Faça seu primeiro registro e o horizonte desta leitura se revelará.</div>';
-        }
-        caption.textContent = `A média considera ${elapsedDays} ${elapsedDays === 1 ? "dia" : "dias"} desde o início da leitura.`;
-        renderHistory(book, "analytics-history");
-      }
-
-      function renderAll() {
-        renderCatalog();
-        renderCheckin();
-        renderAnalytics();
-      }
-
-      document.querySelectorAll('[role="tab"]').forEach((tab) => {
-        tab.addEventListener("click", () => {
-          document.querySelectorAll('[role="tab"]').forEach((item) => {
-            const active = item === tab;
-            item.setAttribute("aria-selected", String(active));
-            byId(item.getAttribute("aria-controls")).hidden = !active;
-          });
-        });
-      });
-
-      byId("book-start").value = localDateString();
-      byId("book-start").max = localDateString();
-      byId("book-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        hideNotice("form-notice");
-        const form = new FormData(event.currentTarget);
-        const title = String(form.get("title")).trim();
-        const author = String(form.get("author")).trim();
-        const totalPages = Number(form.get("pages"));
-        const startDate = String(form.get("startDate"));
-        if (!title || !author || !Number.isInteger(totalPages) || totalPages < 1 || totalPages > 100000) {
-          showNotice("form-notice", "Informe título, autor e um total válido de páginas.", "error");
-          return;
-        }
-        if (!startDate || startDate > localDateString()) {
-          showNotice("form-notice", "A data de início não pode estar no futuro.", "error");
-          return;
-        }
-        state.books.unshift({
-          id: window.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-          title, author, totalPages, startDate, checkins: []
-        });
-        if (!persist()) {
-          state.books.shift();
-          return;
-        }
-        event.currentTarget.reset();
-        byId("book-pages").value = "250";
-        byId("book-start").value = localDateString();
-        showNotice("form-notice", "A ficha foi guardada na biblioteca.", "success");
-        renderAll();
-      });
-
-      byId("checkin-book").addEventListener("change", renderCheckin);
-      byId("analytics-book").addEventListener("change", renderAnalytics);
-      byId("save-checkin").addEventListener("click", () => {
-        hideNotice("checkin-notice");
-        const book = state.books.find((item) => item.id === byId("checkin-book").value);
-        if (!book) return;
-        const page = Number(byId("current-page").value);
-        if (!Number.isInteger(page) || page < 0 || page > book.totalPages) {
-          showNotice("checkin-notice", `A página deve estar entre 0 e ${formatNumber(book.totalPages)}.`, "error");
-          return;
-        }
-        const today = localDateString();
-        const previous = book.checkins.filter((entry) => entry.date < today).sort((a, b) => b.date.localeCompare(a.date))[0];
-        if (previous && page < previous.page) {
-          showNotice("checkin-notice", `Seu registro anterior foi na página ${previous.page}. O novo registro não pode retroceder.`, "error");
-          return;
-        }
-        const sameDay = book.checkins.find((entry) => entry.date === today);
-        const oldPage = sameDay ? sameDay.page : null;
-        if (sameDay) sameDay.page = page;
-        else book.checkins.push({ date: today, page });
-        if (!persist()) {
-          if (sameDay) sameDay.page = oldPage;
-          else book.checkins.pop();
-          return;
-        }
-        showNotice("checkin-notice", "Seu progresso de hoje foi registrado.", "success");
-        renderAll();
-      });
-
-      byId("export-button").addEventListener("click", () => {
-        const payload = JSON.stringify({ format: STORAGE_KEY, exportedAt: new Date().toISOString(), books: state.books }, null, 2);
-        const blob = new Blob([payload], { type: "application/json" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `santuario-leitura-${localDateString()}.json`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-      });
-
-      byId("import-button").addEventListener("click", () => byId("import-file").click());
-      byId("import-file").addEventListener("change", async (event) => {
-        const file = event.currentTarget.files[0];
-        if (!file) return;
-        try {
-          const imported = JSON.parse(await file.text());
-          if (!imported || !Array.isArray(imported.books)) throw new Error("O arquivo não contém uma biblioteca válida.");
-          const validBooks = imported.books.every((book) =>
-            book && typeof book.id === "string" && typeof book.title === "string" &&
-            typeof book.author === "string" && Number.isInteger(book.totalPages) && book.totalPages > 0 &&
-            typeof book.startDate === "string" && Array.isArray(book.checkins) &&
-            book.checkins.every((entry) => entry && typeof entry.date === "string" &&
-              Number.isInteger(entry.page) && entry.page >= 0 && entry.page <= book.totalPages)
-          );
-          if (!validBooks) throw new Error("Um ou mais registros do arquivo são inválidos.");
-          const previous = state;
-          state = { books: imported.books };
-          if (!persist()) {
-            state = previous;
-            return;
-          }
-          renderAll();
-          showNotice("form-notice", `${state.books.length} ${state.books.length === 1 ? "livro importado" : "livros importados"} com sucesso.`, "success");
-        } catch (error) {
-          console.error("Falha ao importar registros:", error);
-          showNotice("form-notice", `Não foi possível importar: ${error.message}`, "error");
-        } finally {
-          event.currentTarget.value = "";
-        }
-      });
-
-      renderAll();
-    })();
-  </script>
+    <section class="tab-panel" id="panel-archive" role="tabpanel" aria-labelledby="tab-archive" tabindex="0" hidden>
+      <section class="panel backup-card">
+        <div class="page-heading">
+          <h2 class="section-title"><span>♧</span>Arquivo e memória</h2>
+          <p class="page-kicker">Guarde uma cópia de suas jornadas.</p>
+        </div>
+        <p>Seus livros e check-ins permanecem neste navegador. Exporte um arquivo para guardá-los ou transferi-los para outro dispositivo.</p>
+        <div class="tools">
+          <button type="button" class="gold-button" id="export-button">⇩ &nbsp; Exportar meus registros</button>
+          <label for="import-file" class="quiet-button">⇧ &nbsp; Importar cópia</label>
+          <input id="import-file" type="file" accept="application/json,.json">
+        </div>
+        <p class="notice" id="archive-notice" role="status" aria-live="polite"></p>
+        <div class="privacy-note"><strong>Nota de privacidade.</strong> Esta é uma aplicação estática: os registros ficam apenas no armazenamento local do navegador e não são enviados ao GitHub. Limpar os dados do navegador também apaga a biblioteca; mantenha cópias exportadas em local seguro.</div>
+      </section>
+    </section>
+    <footer class="footer">À luz baixa, cada leitura acende uma pequena eternidade.</footer>
+  </main>
+  <script src="app.js" defer></script>
 </body>
 </html>
