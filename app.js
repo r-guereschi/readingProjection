@@ -400,6 +400,7 @@
   }
 
   function activateTab(name, focusButton = false) {
+    const activePanel = document.getElementById(`panel-${name}`);
     document.querySelectorAll("[role='tab']").forEach((tab) => {
       const selected = tab.dataset.tabTarget === name;
       tab.setAttribute("aria-selected", String(selected));
@@ -408,6 +409,9 @@
     document.querySelectorAll("[role='tabpanel']").forEach((panel) => {
       panel.hidden = panel.id !== `panel-${name}`;
     });
+    activePanel.classList.remove("is-entering");
+    void activePanel.offsetWidth;
+    activePanel.classList.add("is-entering");
     if (focusButton) document.getElementById(`tab-${name}`).focus();
   }
 
@@ -594,4 +598,5 @@
     });
 
   render();
+  activateTab("overview");
 })();
